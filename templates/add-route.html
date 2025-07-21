@@ -1,0 +1,51 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Admin: Add Route </title>
+        <link rel="stylesheet" href="../static/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+        <header class="account-header">
+            <h1> Add Route </h1>
+            <br>
+            <p> Add route to the 'routes' tables </p>
+        </header>
+
+        {% for mesg in get_flashed_messages() %}
+            <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %}
+
+        <div class="add-route-container">
+            <div class="add-route-col">
+                <form action="/add-route" method="post">
+                    
+                    <input type="text" id="departure-city" name="departure-city" placeholder="Departure City" required>
+                    <br>
+
+                    <label for="departure-time" style="color: gray; font-weight: 380;">Time:</label>
+                    <input type="time" id="departure-time" name="departure-time" required>
+                    <br>
+                    
+                    <input type="text" id="arrival-city" name="arrival-city" placeholder="Arrival City" required>
+                    <br>
+
+                    <label for="arrival-time" style="color: gray; font-weight: 380;">Time:</label>
+                    <input type="time" id="arrival-time" name="arrival-time" required>
+                    <br>
+
+                    <input type="number" id="price" name="price" placeholder="Price" required>
+                    <br>
+
+                    <button type="submit" class="submit-btn">Add Journey</button>
+                </form>
+            </div>
+        </div>
+
+    <script></script>
+    </body>
+
+</html>

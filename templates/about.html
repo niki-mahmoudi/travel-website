@@ -1,0 +1,36 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> About </title>
+        <link rel="stylesheet" href="../static/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+
+        {% for mesg in get_flashed_messages() %}
+        <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %}
+
+
+        <div class="info-col">
+            <h2 class="info-title" style="margin: 10px;">Our history </h2>
+            <div class="info-container">
+                <p class="info-p"> Founded in 2025, <strong>Horizon Travels</strong> was built around a single principle: effortless trip-planning. Its creator grew frustrated with the big and famous travel sites that bombard users with pop-ups, bury real prices behind service fees, and ignore basic accessibility standards. Horizon Travels flips that experience on its head. From a satisfying aesthetic design to itineraries you can export in two clicks, every detail focuses on clarity, safety and genuine usability so that travellers can spend less time wrestling with websites and more time exploring the world. </p>
+            </div>
+            <div class="info-container">
+                <p class="info-p">This site is a labour of love, built entirely on volunteer time and zero funding. If you've found it helpful, please consider making a small donation—every contribution goes straight into upgrading the website.</p>
+            </div>
+            <form class="donate" action="https://www.paypal.com/donate" method="post" target="_top">
+                <input type="hidden" name="hosted_button_id" value="UTNSJWVLWY4TL" />
+                <input type="image" src="../static/img/paypal-donate.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+                <img alt="" src="../static/img/paypal-donate.png" width="1" height="1" />
+            </form>
+        </div>
+
+    <script></script>
+    </body>
+
+</html>

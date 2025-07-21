@@ -1,0 +1,53 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+            <header>
+            <!-- <h1 style="float: left;"> Horizon Travels </h1> -->
+
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li><h2>HorizonTravels ✈︎</h2></li>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="book.html">Book a Flight</a></li>
+                    <li><a href="deals.html">Travel Deals</a></li>
+                    <!-- <li><a href="#contact-us">Contact us</a></li> -->
+                    {% if not user %}
+                        <li style="float:right;"><a href="login.html">Sign up/Login</a></li>
+                    {% endif %}
+                    {% if admin %}
+                        <li class="user-account dropdown"> <a href="admin.html"><img src="../static/img/user-icon.png" alt="User Icon" class="user-icon"> {{name}}</a></li>
+                    {% endif %}
+                    {% if not admin %}
+                        {% if user %}
+                            <li class="user-account dropdown"> <a href="account.html"><img src="../static/img/user-icon.png" alt="User Icon" class="user-icon"> {{name}}</a>
+                                <!-- <div class="dropdown-content">
+                                    <a href="/logout">Logout</a>
+                                </div> -->
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    
+                </ul>
+            </nav>
+
+            <nav class="mobile-nav">
+                <a href="#" style="font-size: 20px; font-weight: bold;"> HorizonTravels ✈︎ </a>
+                <ul class="dropdown">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="book.html">Book a Flight</a></li>
+                    <li><a href="deals.html">Travel Deals</a></li>
+                    <!-- <li><a href="#contact-us">Contact us</a></li> -->
+                    {% if admin %}
+                        <li class="user-account"><a href="admin.html">Manage Your Account</a></li>
+                    {% endif %}
+                    {% if not admin %}
+                        {% if not user %}
+                            <li><a href="login.html">Sign up/Login</a></li>
+                        {% endif %}
+                        {% if user %}
+                            <li class="user-account"><a href="account.html">Manage Your Account</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </nav>
+            </header>

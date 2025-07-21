@@ -1,0 +1,29 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Book a Flight </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/style.css" !important/>
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+
+        <header class="book-header">
+            <h1> Booking </h1>
+            <br>
+            <p> Please fill out the information needed to make a successfull booking with us: </p>
+        </header>
+
+        {% for mesg in get_flashed_messages() %}
+            <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %}
+
+        <script id="replace_with_book" src="../static/book.js"></script>
+        <script type="module" src="{{ url_for('static', filename='book.js') }}"></script>
+
+    </body>
+
+</html>

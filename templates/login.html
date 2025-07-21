@@ -1,0 +1,55 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Log in to Horizon Travels </title>
+        <link rel="stylesheet" href="../static/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+
+        <header class="login-header">
+            <h1> Log in to Horizon Travels </h1>
+            <br>
+            <p> To see your bookings please enter your email and password: </p>
+        </header>
+
+        {% for mesg in get_flashed_messages() %}
+            <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %}
+        
+        <div class="login-container">
+            <div class="login-col">
+                <h3> Login </h3>
+                <form action="/login" method="post">
+                    <!-- <label for="email"> Email: </label> -->
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <br>
+                    <!-- <label for="password"> Password: </label> -->
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <br>
+                    
+                    <!-- <div class="actions">
+                        <label class="keep-logged-in">
+                          <input type="checkbox" />
+                          Keep me logged in on this device
+                      </div> -->
+
+                      <button type="submit" class="login-btn">Log in</button>
+
+                </form>
+
+                <p> Not a Horizon member? <a href="signup.html"> Join us. </a></p>
+            </div>
+        
+        <!-- <div class="signup-col">
+            <h3> Not a Horizon member? </h3>
+            <p><a href="signup.html"> Join us now! </a></p>
+            <button class="signup-btn">Join now</button>
+        </div> -->
+
+        </div>
+    </body>
+
+</html>

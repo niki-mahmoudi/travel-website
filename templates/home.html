@@ -1,0 +1,145 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Horizon Travels </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/style.css" !important/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+        
+        {% if user %}
+            <p class="welcome"> Welcome {{name}}!</p>
+        {% endif %} 
+
+        <div id="cookies-placeholder"></div>
+        <script src="{{ url_for('static', filename='cookies.js') }}"></script>
+
+        <div class="pick-city-col">
+            <h2 class="pick-city-title">Pick your journey:</h2>
+            <p class="pick-city-p"> At Horizon Travels we put your safety first and design every part of our service around a hassle-free experience. From secure payment processing and transparent pricing to an intuitive trip-planner that lets you compare routes in seconds, our platform keeps everything simple and protected.</p>
+            <div>
+                <form class="pick-city-container" id="quick-route" action="{{ url_for('book') }}" method="get">
+                <div>
+                    <select name="leave" class="leave-city" required>
+                        <option value=""> Select Departure City</option>
+                        <!-- <option value="Newcastle"> Newcastle </option>
+                        <option value="Bristol"> Bristol </option>
+                        <option value="Cardiff"> Cardiff </option>
+                        <option value="Manchester"> Manchester </option>
+                        <option value="Glasgow"> Glasgow </option>
+                        <option value="London"> London </option>
+                        <option value="Portsmouth"> Portsmouth </option>
+                        <option value="Dundee"> Dundee </option>
+                        <option value="Edinburgh"> Edinburgh </option>
+                        <option value="Birmingham"> Birmingham </option>
+                        <option value="Southampton"> Southampton </option>
+                        <option value="Aberdeen"> Aberdeen </option> -->
+                    </select>
+                    <select id="arrive-city" name="arrive" class="arrive-city" required>
+                        <option value="">Select Departure First</option>
+                    </select>
+                    </div>
+                    <button type="submit" id="nextBtn" class="booking-btn" style="margin-top:10px; max-width: 825px;">Complete booking</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="main-info-col">
+            <h3> Why choose Horizon Travels? </h3>
+            <ul class="main-info-container">
+                <li>Easy booking process</li>
+                <li>Advanced data protection</li>
+                <li>Great travel deals and discounts</li>
+                <li>Large travel availability</li>
+                <li>24-hour customer support</li>
+                <li>Advanced booking technologies</li>
+            </ul>
+        </div>
+
+
+        <div class="main-pic-col">
+            <h3> Where to? </h3>
+            <div class="main-pic-container">
+
+                <div class="img-group">
+                    <span class="img-location">⚲ London</span>
+                    <a href="https://g.co/kgs/iTuj1hE">
+                        <img class="normal" src="../static/img/london-1.jpg" alt="London">
+                        <img class="hover" src="../static/img/london-2.jpg" alt="">
+                    </a>
+                </div>
+
+                <div class="img-group">
+                    <span class="img-location">⚲ Edinburgh</span>
+                    <a href="https://g.co/kgs/D2ZkKc7">
+                        <img class="normal" src="../static/img/edinburgh-1.jpg" alt="Edinburgh">
+                        <img class="hover" src="../static/img/edinburgh-2.jpg" alt="">
+                    </a>
+                </div>
+
+                <div class="img-group">
+                    <span class="img-location">⚲ Manchester</span>
+                    <a href="https://g.co/kgs/rAu6Tzy">
+                        <img class="normal" src="../static/img/manchester-1.jpg" alt="Manchester">
+                        <img class="hover" src="../static/img/manchester-2.jpg" alt="">
+                    </a>
+                </div>
+
+                
+            </div>
+        </div>
+
+
+        <footer id="replace_with_footer"> 
+            <h5> &copy; All rights reserved.</h5>
+            <h5 id="contact-us" style="font-weight: 300;">Contact Us: +44 000 000000</h5>
+        </footer>
+        
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const leaveSel  = document.querySelector("select[name='leave']");
+              const arriveSel = document.querySelector("select[name='arrive']");
+            
+              const buildArrivals = (routes, dep) => {
+                arriveSel.innerHTML = "";
+                const list = routes.filter(r =>
+                  r.departure.trim().toLowerCase() === dep.trim().toLowerCase()
+                );
+            
+                arriveSel.innerHTML = list.length
+                  ? list.map(r => `<option value="${r.arrival}">${r.arrival}</option>`).join("")
+                  : '<option disabled>No available destinations</option>';
+              };
+            
+              fetch("/get-travel-options")
+                .then(r => r.json())
+                .then(routes => {
+                  console.table(routes); 
+                    if (!routes.length) {
+                        console.warn("get-travel-options returned an empty array");
+                        return;
+                    }
+
+                    const departures = [...new Set(
+                    routes.map(r => r.departure.trim()).filter(Boolean)
+                    )].sort();
+
+                    leaveSel.innerHTML =
+                    '<option value="">Select Departure City</option>' +
+                    departures.map(d => `<option value="${d}">${d}</option>`).join("");
+
+                    leaveSel.addEventListener("change",
+                        () => buildArrivals(routes, leaveSel.value));
+                })
+                .catch(err => console.error("Error fetching travel options:", err));
+            });
+            </script>
+            
+    </body>
+</html>

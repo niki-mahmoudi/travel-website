@@ -1,0 +1,76 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Deals </title>
+        <link rel="stylesheet" href="../static/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+
+        {% for mesg in get_flashed_messages() %}
+        <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %}
+
+
+        <div class="info-col">
+            <h2 class="info-title" style="margin: 10px;">Our travel deals </h2>
+            <div class="info-container">
+                <p class="info-p"> As well as our other services we also try to provide the best prices for our costumers, here is a list of our discount scheme: </p>
+            </div>
+            <table class="discount-table">
+                <thead>
+                    <tr>
+                        <th>Number of days in advance booking</th>
+                        <th>Discount (Percentage)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th scope="row">Between 80-90 days</th>
+                    <td class="table-td">25%</td>
+                </tbody>
+                <tbody>
+                    <th>Between 60 and 79 days</th>
+                    <td class="table-td">15%</td>
+                </tbody>
+                <tbody>
+                    <th>Between 45 and 59 days</th>
+                    <td class="table-td">10%</td>
+                </tbody>
+                <tbody>
+                    <th>Under 45 days</th>
+                    <td class="table-td">No discount</td>
+                </tbody>
+              </table>
+              <div class="info-container">
+                <p class="info-p"> With these discounts we also have rules for refunds and by accepting our <strong>Terms of Services</strong> you agree with these rules:</p>
+            </div>
+            <table class="discount-table" style="margin-bottom:30px;">
+                <thead>
+                    <tr>
+                        <th>Number of days in advance of booking</th>
+                        <th>Refund (Percentage)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th scope="row">Before 60 days</th>
+                    <td class="table-td">100%</td>
+                </tbody>
+                <tbody>
+                    <th>Between 30 and 60 days</th>
+                    <td class="table-td">40%</td>
+                </tbody>
+                <tbody>
+                    <th>Within 30 days</th>
+                    <td class="table-td">0%, No refund given</td>
+                </tbody>
+              </table>
+            </div>
+        </div>
+
+    <script></script>
+    </body>
+
+</html>

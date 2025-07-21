@@ -1,0 +1,24 @@
+$(document).ready(function() {
+    $("<select class='mobile-nav' />").appendTo("nav");
+
+    $("<option />", {
+        "selected": "selected",
+        "value": "",
+        "text": "Go to..."
+    }).appendTo("nav select");
+
+    $("nav a").each(function() {
+        var el = $(this);
+        $("<option />", {
+            "value": el.attr("href"),
+            "text": el.text()
+        }).appendTo("nav select");
+    });
+
+    $("nav select").change(function() {
+        var selectedOption = $(this).val();
+        if (selectedOption) {
+            window.location = selectedOption;
+        }
+    });
+});

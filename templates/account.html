@@ -1,0 +1,190 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Manage Your Account </title>
+        <link rel="stylesheet" href="../static/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+        <header class="account-header">
+            <h1> Account handling </h1>
+            <br>
+            <p> Manage your account to your liking </p>
+        </header>
+
+        {% for mesg in get_flashed_messages() %}
+        <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %}
+
+    <div class="account-container">
+        <div class="account-col">
+            <h3 onclick="showPasswordForm()" style="text-decoration: underline;">Change password</h3>
+
+            <div class="row">
+                <div id="password-form" style="display: none;">
+                        <input type="text" id="old-password" name="old-password" class="change-pwd" placeholder="Enter your current password" required style="width:370px;">
+                        <button class="change-password-btn" onclick="verifyOldPassword()"> Confirm </button>
+                    
+                    <div id="new-password-container" style="display: none;">
+                        <input type="password" id="new-password" name="new-password" class="change-pwd" placeholder="Enter new password" required style="width:264px;">
+                        <button class="change-password-btn" onclick="updatePassword()"> Confirm new password </button>
+                    </div>
+                </div>
+            </div>
+                <h3> Your bookings </h3><br>
+                <table class="receipt-table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Route</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Seats</th>
+                            <th>Seat Class</th>
+                            <th>Manage booking</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for b in bookings %}
+                        <tr>
+                            <th scope="row">{{ b.bookingID }}</th>
+                    
+                            <td>{{ b.departure_city }} → {{ b.arrival_city }} ({{b.routeID}})</td>
+                            <td>{{ b.ticket_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ b.departure_time }} - {{ b.arrival_time }}</td>
+                            <td>{{ b.seats }}</td>
+                            <td>{{ b['class'] }}</td>
+                            <td><a href="{{ url_for('cancel_booking',
+                                user_id=b.userID,
+                                booking_id=b.bookingID,
+                                route_id=b.routeID) }}"
+                                data-ticket-date="{{ b.ticket_date.strftime('%Y-%m-%d') }}"
+                                onclick="return deleteBooking(event, this)">
+                                Cancel booking
+                            </a></td>
+                            <td>{{ b.status }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                <br>
+                <h3><a href="/logout" style="color: rgb(124, 8, 8);"> Logout </a></h3><br>
+                <h3><a href="/delete-account" method="get" style="color: rgb(124, 8, 8);">Delete account</a></h3>
+                <!-- <form id="delete-account-form" method="POST"><input type="hidden" name="email" value="{{ session.get('email') }}"><h3 style="color: rgb(124, 8, 8); 
+                    text-decoration:underline; cursor: pointer;" onclick="confirmDelete()"> Delete account </h3></form> -->
+        </div>
+    </div>
+
+    <script>
+
+        function showPasswordForm() {
+            document.getElementById('password-form').style.display = 'block';
+        }
+
+        function verifyOldPassword() {
+            var oldPassword = document.getElementById('old-password').value;
+            
+            if (oldPassword) {
+                var formData = new FormData();
+                formData.append('old-password', oldPassword);
+                
+                fetch('/verify-old-password', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('new-password-container').style.display = 'block';
+                    } else {
+                        alert('Incorrect password. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error processing your request.');
+                });
+            }
+        }
+
+        function updatePassword() {
+            var newPassword = document.getElementById('new-password').value;
+            
+            if (newPassword) {
+                // Send the new password to the server to update it
+                var formData = new FormData();
+                formData.append('new-password', newPassword);
+                
+                fetch('/update-password', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Password updated successfully!');
+                    } else {
+                        alert('There was an error updating the password.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error processing your request.');
+                });
+            }
+        }
+
+        function confirmDelete(){
+            var confirmDeletion = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+        
+            if (confirmDeletion) {
+                submitDeleteForm();
+            } else {
+                console.log("Account deletion cancelled.");
+            }
+        }
+        
+        function submitDeleteForm(){
+            var formData = new FormData(document.getElementById('delete-account-form'));
+        
+            fetch('/delete-account', {
+                method: 'POST',
+                body: formData,
+            })
+        }
+
+        function deleteBooking(evt, link){
+        evt.preventDefault(); 
+
+        const dateStr = link.getAttribute('data-ticket-date');
+
+        const flightDate = new Date(dateStr);      // midnight local
+
+        const today = new Date();
+
+        const msPerDay  = 1000 * 60 * 60 * 24;
+        const daysUntil = Math.ceil((flightDate - today) / msPerDay);
+        
+
+        let refundPct;
+        if      (daysUntil > 60)                   refundPct = 100;
+        else if (daysUntil >= 30 && daysAgo <= 60) refundPct = 60;
+        else if (daysUntil < 30)                   refundPct = 0;
+
+        const msg = `Your flight was booked for ${daysUntil} from now.\n`
+                    + `According to our policy you will get ${refundPct}% of your money back.\n`
+                    + `Proceed with cancellation?`;
+        if (!confirm(msg)) return false;
+
+        window.location.href = link.href;
+        return false;
+        }
+
+        </script>
+    </body>
+
+</html>

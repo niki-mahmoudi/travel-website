@@ -1,0 +1,297 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Admin page </title>
+        <link rel="stylesheet" href="../static/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+        <header class="account-header">
+            <h1> Admin Handling Page </h1>
+            <br>
+        </header>
+
+        {% for mesg in get_flashed_messages() %}
+            <h1 class="flash {{ category }}" role="alert">{{ mesg }}</h1>
+        {% endfor %} 
+
+    <div class="account-container">
+        <div class="account-col">
+            <h3 onclick="showPasswordForm()" style="text-decoration: underline;">Change password</h3>
+
+            <div class="row">
+                <div id="password-form" style="display: none;">
+                        <input type="text" id="old-password" name="old-password" class="change-pwd" placeholder="Enter your current password" required style="width:370px;">
+                        <button class="change-password-btn" onclick="verifyOldPassword()"> Confirm </button>
+                    
+                    <div id="new-password-container" style="display: none;">
+                        <input type="password" id="new-password" name="new-password" class="change-pwd" placeholder="Enter new password" required style="width:264px;">
+                        <button class="change-password-btn" onclick="updatePassword()"> Confirm new password </button>
+                    </div>
+                </div>
+            </div>
+
+            <h3 onclick="showReportTable()" style="text-decoration: underline;"> Reports </h3><br>
+            <!-- <a id="report" href="" onclick="showTable()">last-month-sales.png</a> -->
+            <h5 id="report-title" style="display: none;"> Past Month's Bookings: </h5>
+            <table class="report-table" id="report-table" style="display: none; margin-bottom: 15px;">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Route ID</th>
+                        <th>Departure City</th>
+                        <th>Arrival City</th>
+                        <th>Number of seats</th>
+                        <th>Seat class</th>
+                        <th>Ticket Date:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for l in last_month_bookings %}
+                    <tr>
+                        <th scope="row">{{ l.bookingID }}</th>
+                        <th>{{ l.routeID }}</th>
+                        <td>{{ l.departure_city }}</td>
+                        <td>{{ l.arrival_city }}</td>
+                        <td>{{ l.seats }}</td>
+                        <td>{{ l.class }}</td>
+                        <td>{{ l.ticket_date }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+
+            <h5 id="report-title2" style="display: none;"> Top Customers: </h5>
+            <table class="report-table" id="report-table2" style="display: none; margin-bottom: 15px;">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Email</th>
+                        <th>Total Seats Purchased</th>
+                        <th>Total Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for c in customer_scores %}
+                    <tr>
+                        <th scope="row">{{ c.userID }}</th>
+                        <td>{{ c.email }}</td>
+                        <td>{{ c.total_seats }}</td>
+                        <td>{{ c.total_spent }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+
+            <h5 id="report-title3" style="display: none;"> Top Routes: </h5>
+            <table class="report-table" id="report-table3" style="display: none; margin-bottom: 15px;">
+                <thead>
+                    <tr>
+                        <th>Route ID</th>
+                        <th>Details</th>
+                        <th>Total Seats Purchased</th>
+                        <th>Total spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for r in route_scores %}
+                    <tr>
+                        <th scope="row">{{ r.routeID }}</th>
+                        <td>{{ r.departure_city }} → {{ r.arrival_city }}</td>
+                        <td>{{ r.total_seats }}</td>
+                        <td>{{ r.total_spent }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+
+
+            <h3 onclick="showUserTable()" style="text-decoration: underline;"> User Accounts </h3><br>
+                <table class="user-table" id="user-table" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Manage accounts</th>
+                            <th>Delete account</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for a in users %}
+                        <tr>
+                            <th scope="row">{{ a.userID }}</th>
+                            <th>{{ a.name }}</th>
+                            <td>{{ a.email }}</td>
+                            <td><a href="{{  url_for('login_to_user', email=a.email, name=a.name)  }}">Login to user</a></td>
+                            <td><a href="{{  url_for('delete_user', user_id=a.userID)  }}">Delete</a></td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                
+            
+
+            <h3 onclick="showBookingTable()" style="text-decoration: underline;"> All Bookings </h3><br>
+                <table class="booking-table" id="booking-table" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>User ID</th>
+                            <th>Route</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Seats</th>
+                            <th>Seat Class</th>
+                            <th>Manage booking</th>
+                            <th>Paid:</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for b in bookings %}
+                        <tr>
+                            <th scope="row">{{ b.bookingID }}</th>
+                            <td>{{ b.userID }}</td>
+                            <td>{{ b.departure_city }} → {{ b.arrival_city }} ({{b.routeID}})</td>
+                            <td>{{ b.ticket_date }}</td>
+                            <td>{{ b.departure_time }} - {{ b.arrival_time }}</td>
+                            <td>{{ b.seats }}</td>
+                            <td>{{ b['class'] }}</td>
+                            <td><a href="{{ url_for('cancel_booking', user_id=b.userID, booking_id=b.bookingID, route_id=b.routeID) }}" 
+                                onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel booking</a></td>
+                            <td>{{ b.total_paid }}</td>
+                            <td>{{ b.status }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                
+
+
+                <h3 onclick="showRouteTable()" style="text-decoration: underline;"> All Routes </h3><br>
+                <table class="route-table" id="route-table" style="display: none;">
+                    <thead>
+                      <tr>
+                        <th>Route ID</th>
+                        <th>Departure City</th>
+                        <th>Departure Time</th>
+                        <th>Arrival City</th>
+                        <th>Arrival Time</th>
+                        <th>Price</th>
+                        <th>Delete route</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for r in routes %}
+                      <tr>
+                        <th scope="row">{{ r.routeID }}</th>
+                        <td>{{ r.departure_city }}</td>
+                        <td>{{ r.departure_time }}</td>
+                        <td>{{ r.arrival_city }}</td>
+                        <td>{{ r.arrival_time }}</td>
+                        <td>{{ r.price }}</td>
+                        <td><a href="{{ url_for('delete_routes', route_id=r.routeID) }}" 
+                            onclick="return confirm('Are you sure you want to delete this route?');">Delete</a></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                <a href="add-route.html" style="display: none; margin-bottom: 10px;" id="extra-route-table">Add route</a>
+                
+
+
+                <h3><a href="/logout" style="color: rgb(124, 8, 8);"> Logout </a></h3><br>
+                <!-- <form id="delete-account-form" method="POST"><input type="hidden" name="email" value="{{ session.get('email') }}"><h3 style="color: rgb(124, 8, 8); 
+                    text-decoration:underline; cursor: pointer;" onclick="confirmDelete()"> Delete account </h3></form> -->
+        </div>
+    </div>
+
+    <script>
+
+        function showUserTable(){
+            document.getElementById('user-table').style.display = 'block';
+        }
+
+        function showBookingTable(){
+            document.getElementById('booking-table').style.display = 'block';
+        }
+
+        function showRouteTable(){
+            document.getElementById('route-table').style.display = 'block';
+            document.getElementById('extra-route-table').style.display = 'block';
+        }
+
+        function showReportTable(){
+            document.getElementById('report-title').style.display = 'block';
+            document.getElementById('report-table').style.display = 'block';
+            document.getElementById('report-title2').style.display = 'block';
+            document.getElementById('report-table2').style.display = 'block';
+            document.getElementById('report-title3').style.display = 'block';
+            document.getElementById('report-table3').style.display = 'block';
+        }
+
+        function showPasswordForm() {
+            // When the "Change password" button is clicked, show the password form
+            document.getElementById('password-form').style.display = 'block';
+        }
+
+        function verifyOldPassword() {
+            var oldPassword = document.getElementById('old-password').value;
+            
+            if (oldPassword) {
+                var formData = new FormData();
+                formData.append('old-password', oldPassword);
+                
+                fetch('/verify-old-password', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('new-password-container').style.display = 'block';
+                    } else {
+                        alert('Incorrect password. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error processing your request.');
+                });
+            }
+        }
+
+        function updatePassword() {
+            var newPassword = document.getElementById('new-password').value;
+            
+            if (newPassword) {
+                var formData = new FormData();
+                formData.append('new-password', newPassword);
+                
+                fetch('/update-password', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Password updated successfully!');
+                    } else {
+                        alert('There was an error updating the password.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error processing your request.');
+                });
+            }
+        }
+
+        </script>
+    </body>
+
+</html>

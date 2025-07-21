@@ -1,0 +1,10 @@
+background.jpg : Photo by D. C.  O'Brien: https://www.pexels.com/photo/gray-airplane-2239509/
+
+london-1.jpg : Photo by Kate Strilchuk: https://www.pexels.com/photo/big-ben-reflecting-at-night-in-london-30412608/
+london-2.jpg : Photo by David Geib: https://www.pexels.com/photo/low-angle-photo-of-people-waiting-for-the-red-bus-to-pass-3220846/
+
+edinburgh-1.jpg : Photo by David Rico: https://www.pexels.com/photo/medieval-building-2682675/
+edinburgh-2.jpg : Photo by Daniel Ellis: https://www.pexels.com/photo/bending-urban-street-15535677/
+
+manchester-1.jpg : Photo by Szymon Shields: https://www.pexels.com/photo/the-university-of-manchester-in-england-11210300/
+manchester-2.jpg : Photo by Florent Bertiaux: https://www.pexels.com/photo/photo-of-street-surrounded-by-buildings-2607731/

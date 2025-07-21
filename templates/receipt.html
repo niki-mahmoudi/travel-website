@@ -1,0 +1,68 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Book a Flight </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/style.css" !important/>
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    </head>
+
+    <body>
+        <script id="replace_with_navbar" src="../static/nav.js"></script>
+        <div class="receipt-container">
+            <div id="receipt">
+                <canvas id="qrcode"></canvas>
+                <h2>Booking Confirmed</h2>
+                <p><strong> Booking is made under the email:</strong> {{email}} <strong>(user ID: {{user_id}})</strong></p><br>
+                <table class="receipt-table">
+                    <tr><th> Route: </th><td> Route ID: {{route_id}} from {{departure_city}} to {{arrival_city}}</td></tr>
+                    <tr><th> Date and Time: </th><td> On {{date}}, departure at {{departure_time}} and arrival at {{arrival_time}} </td></tr>
+                    <tr><th> Number of Seats: </th><td> {{number_of_seats}} </td></tr>
+                    <tr><th> Seat Class: </th><td> {{seat_type}} </td></tr>
+                    <tr><th> Total Paid: </th><td> {{price}} </td></tr>
+                </table>
+                <p> Thank you for booking with us! </p><br>
+            </div>
+            <button class="download-btn" id="download-btn">Download Receipt</button>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+            const receiptText = [
+                `Email: {{ email }}`,
+                `User ID: {{ user_id }}`,
+                `Route: {{ departure_city }} → {{ arrival_city }} (ID: {{ route_id }})`,
+                `Date: {{ date }}`,
+                `Departure: {{ departure_time }}`,
+                `Arrival: {{ arrival_time }}`,
+                `Seats: {{ number_of_seats }}`,
+                `Class: {{ seat_type }}`,
+                `Total price: £{{ price }}`
+            ].join('\n');
+
+            const qr = new QRious({
+                element: document.getElementById('qrcode'),
+                value: receiptText,
+                size: 200
+            });
+
+            document.getElementById('download-btn').addEventListener('click', () => {
+            html2canvas(document.getElementById('receipt')).then(canvas => {
+                canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'booking_receipt.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                });
+            });
+            });
+        });
+        </script>
+
+</html>

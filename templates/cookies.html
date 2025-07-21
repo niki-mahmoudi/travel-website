@@ -1,0 +1,9 @@
+{% if request.cookies.get('cookie_consent') is none %}
+<div class="cookie-banner" id="cookie-banner">
+  <p style="margin-right: 10px;"><strong>This website uses cookies.</strong>
+     We use cookies to provide you with the best experience.</p>
+
+  <button id="accept-cookies"  style="background:#4CAF50; margin-right: 10px;">Accept</button>
+  <button id="decline-cookies" style="background:#af4c4c">Decline</button>
+</div>
+{% endif %}

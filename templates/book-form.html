@@ -1,0 +1,71 @@
+<!-- Code by Niki Mahmoudi, student ID: 24012655 -->
+<form class="form-wizard" id="regForm" action="/book" method="post">
+
+    <div class="travel-container" name="travel-info">
+        <h3> Booking details </h3><br>
+        <div class ="travel-row">
+            <!-- <label for="leave-city-option"> From: </label> -->
+            <select name="leave-city-options" class="leave-city-options" required>
+                <option value=""> Select Departure City</option>
+                <!-- <option value="Newcastle"> Newcastle </option>
+                <option value="Bristol"> Bristol </option>
+                <option value="Cardiff"> Cardiff </option>
+                <option value="Manchester"> Manchester </option>
+                <option value="Glasgow"> Glasgow </option>
+                <option value="London"> London </option>
+                <option value="Portsmouth"> Portsmouth </option>
+                <option value="Dundee"> Dundee </option>
+                <option value="Edinburgh"> Edinburgh </option>
+                <option value="Birmingham"> Birmingham </option>
+                <option value="Southampton"> Southampton </option>
+                <option value="Aberdeen"> Aberdeen </option> -->
+            </select>
+            <!-- <label for="arrive-city-options">To:</label> -->
+            <select id="arrive-city" name="arrive-city-options" class="arrive-city-options" required>
+                <option value="">Select Departure First</option>
+            </select>
+        </div>
+        <div class="travel-row">
+            <div class="travel-date">
+                <!-- <label for="date"> Date: </label> -->
+                <input type="date" id="date" name="travel-date" required>
+            </div>
+            <!-- <label for="number-of-seats"> Number of seats and seat details: </label> -->
+            <input type="number" min="1" name="number-of-seats" class="number-of-seats" placeholder="Number of Seats" required>
+            <!-- <label for="flight-type"> Seat: </label> -->
+            <select name="seat-type" class="seat-type" required>
+                <option value="" disabled selected hidden> Seat Class </option>
+                <option> Standard </option>
+                <option> Business </option>
+            </select>
+            </div>
+        <button type="button" id="nextBtn" class="next-btn"> Confirm and proceed to payment </button>
+        </div>
+    
+    <div class="payment-container">
+        <h3> Payment information </h3><br>
+        <p style="margin-bottom: 10px;">Discount: %<span id="discount-out"></span></p>
+        <p style="margin-bottom: 10px;">Total Price: £<span id="price-out"></span></p>
+        <div class="image-options">
+            <input type="radio" name="payment-method" id="debit" value="debit"/>
+            <label for="debit">
+              <img src="../static/img/debit-card.png" alt="Debit"/>
+              <span>Debit Card</span>
+            </label>
+        
+            <input type="radio" name="payment-method" id="applepay"  value="applepay"/>
+            <label for="applepay">
+              <img src="../static/img/applepay.png"  alt="Apple Pay"/>
+              <span>Apple Pay</span>
+            </label>
+        
+            <input type="radio" name="payment-method" id="paypal" value="paypal"/>
+            <label for="paypal">
+              <img src="../static/img/paypal.png" alt="Paypal"/>
+              <span>Paypal</span>
+            </label>
+          </div>
+          <br>
+        <button type="submit" id="nextBtn" class="submit-btn">Confirm payment</button>
+    </div>
+</form>
